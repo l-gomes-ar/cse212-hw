@@ -18,8 +18,8 @@ public class PersonQueue
 
     public Person Dequeue()
     {
-        var person = _queue[0];
-        _queue.RemoveAt(0);
+        var person = _queue[Length - 1];
+        _queue.RemoveAt(Length - 1);
         return person;
     }
 
