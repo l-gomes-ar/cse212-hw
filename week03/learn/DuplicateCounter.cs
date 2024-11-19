@@ -24,7 +24,9 @@
 
     private static int CountDuplicates(int[] data)
     {
-        // Add code here.
-        return 0;
+        int sizeArray = data.Length;
+        int sizeSet = data.ToHashSet().Count;
+        
+        return sizeArray - sizeSet;
     }
 }
