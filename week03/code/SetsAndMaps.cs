@@ -165,6 +165,6 @@ public static class SetsAndMaps
             descriptions[i] = $"{properties.Place} - Mag {properties.Mag}";
         }
 
-        return [];
+        return descriptions;
     }
 }
