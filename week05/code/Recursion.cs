@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Diagnostics;
 
 public static class Recursion
 {
@@ -15,7 +15,17 @@ public static class Recursion
     public static int SumSquaresRecursive(int n)
     {
         // TODO Start Problem 1
-        return 0;
+        // Base case would be the simplest solution, n == 1 return 1
+        // Also account for n == 0 (return 0 as per the problem assignment)
+        if (n == 1)
+            return 1;
+        else if (n < 1)
+            return 0;
+        
+        // Smaller version of the problem would be n^2 + SumSquaresRecursive(n - 1)
+        // Meaning: If I want to know the sum of all numbers from n to 1 squared, I can 
+        // just sum n^2 and all numbers from (n-1)^2 up to 1.
+        return n * n + SumSquaresRecursive(n - 1);
     }
 
     /// <summary>
@@ -39,7 +49,23 @@ public static class Recursion
     /// </summary>
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
-        // TODO Start Problem 2
+        // base cases
+        // If word has the chosen size, store it
+        if (word.Length == size) {
+            results.Add(word);
+        }
+
+        // Smaller problem, iterate through current list of letters, remove the current letter from the list
+        // and add it to the word
+        for (int i = 0; i < letters.Length; i++) {
+            var lettersLeft = letters.Remove(i, 1);
+
+            // If next recursion would have a word bigger than size, skip to next char in letters
+            if (word.Length + 1 > size) 
+                continue;
+
+            PermutationsChoose(results, lettersLeft, size, word + letters[i]);
+        }
     }
 
     /// <summary>
@@ -96,11 +122,16 @@ public static class Recursion
         if (s == 3)
             return 4;
 
-        // TODO Start Problem 3
-
-        // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
-        return ways;
+        // If first time, create dictionary
+        if (remember == null)
+            remember = new Dictionary<int, decimal>();
+        // Check dictionary for previous results
+        if (remember.ContainsKey(s)) {
+            return remember[s];
+        } else { // else add the result to dictionary with a key of 's', then return it
+            remember[s] = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
+            return remember[s];
+        }
     }
 
     /// <summary>
@@ -118,7 +149,19 @@ public static class Recursion
     /// </summary>
     public static void WildcardBinary(string pattern, List<string> results)
     {
-        // TODO Start Problem 4
+        // base case, no wildcard symbols, add to results
+        int index = pattern.IndexOf('*');
+
+        if (index == -1)
+            results.Add(pattern);
+        else
+        {
+            // for each char in "01"
+            foreach (char x in "01") {
+                // Call the function again, replacing * with a different binary number
+                WildcardBinary(pattern[..index] + x + pattern[(index + 1)..], results);
+            }
+        } 
     }
 
     /// <summary>
